@@ -1,0 +1,139 @@
+/* 通用樣式重置 */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+}
+
+/* 整個頁面背景顏色與字型 */
+body {
+    font-family: "微軟正黑體", sans-serif;
+    background-color: #f0f8ff;
+    /* 淺藍色背景 */
+    color: #333;
+    /* 深灰色文字 */
+    line-height: 1.6;
+    padding: 20px;
+    text-align: center;
+    /* 讓文字與元素置中 */
+}
+
+/* 標題樣式 */
+h1 {
+    font-size: 36px;
+    color: black;
+    /* 藍色 */
+    margin-bottom: 20px;
+    font-size: 100px;
+}
+
+/* 文字描述樣式 */
+.description {
+    font-size: 48px;
+    color: #555;
+    /* 淺灰色文字 */
+    margin-bottom: 30px;
+}
+
+/* 顯示難度的標籤樣式 */
+.level {
+    font-size: 60px;
+    font-weight: bold;
+    color: #333;
+    margin-top: 20px;
+}
+
+/* 按鈕樣式 */
+.my-button1 {
+    display: block;
+    width: 500px;
+    background-color: #DBE6DB;
+    border: 2px solid #AFC8AF;
+    /* 綠色背景 */
+    color: black;
+    padding: 12px 30px;
+    margin: 12px auto;
+    font-size: 60px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+
+.my-button2 {
+    display: block;
+    width: 500px;
+    background-color: #FFFFDB;
+    border: 2px solid #E1DCA9;
+    /* 綠色背景 */
+    color: black;
+    padding: 12px 30px;
+    margin: 12px auto;
+    font-size: 60px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+.my-button3 {
+    display: block;
+    width: 500px;
+    background-color: #FEE1EB;
+    border: 2px solid #E5A9B2;
+    /* 綠色背景 */
+    color: black;
+    padding: 12px 30px;
+    margin: 12px auto;
+    font-size: 60px;
+    font-weight: bold;
+    border-radius: 30px;
+    text-decoration: none;
+    text-align: center;
+    cursor: pointer;
+    transition: background-color 0.3s ease;
+}
+
+/* .star {
+    border: 1px solid #D6B656;
+    padding: 2px 4px;
+    border-radius: 4px;
+    color: #FFF2CC;
+    font-weight: bold;
+    font-size: 18px;
+} */
+
+/* 按鈕懸停效果 */
+.my-button1:hover {
+    background-color: #AFC8AF;
+    /* 更深的綠色 */
+}
+
+.my-button2:hover {
+    background-color: #E1DCA9;
+    /* 更深的綠色 */
+}
+
+.my-button3:hover {
+    background-color: #E5A9B2;
+    /* 更深的綠色 */
+}
+
+/* 超連結文字顏色 */
+a {
+    text-decoration: none;
+    color: inherit;
+    /* 繼承父元素的顏色 */
+}
+
+/* 頁面邊距與容器限制 */
+.container {
+    max-width: 1000px;
+    margin: 0 auto;
+    padding: 20px;
+}
