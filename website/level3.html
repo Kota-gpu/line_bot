@@ -10,10 +10,14 @@
 <body>
     <h1>挑戰自我</h1>
     <p>做完活力運動可以領取獎勵喔</p>
+    <button onclick="history.back()">返回上一頁</button>
     <script src="script.js"></script>
 </body>
 
 <style>
+    body {
+            background-color: #FEE1EB;
+    }
     h1 {
         font-size: 36px;
         color: black;
@@ -29,6 +33,21 @@
         margin-top: 20px;
         text-align: center;
     }
+    button {
+            display: block;
+            margin: 40px auto;
+            padding: 20px 40px;
+            font-size: 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
 </style>
 </head>
 

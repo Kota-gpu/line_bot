@@ -4,42 +4,151 @@
 <head>
     <meta charset="UTF-8">
     <title>活力日常</title>
-    <link rel="stylesheet" href="style.css">
+    <style>
+        body {
+            background-color: #FFFFDB;
+        }
+
+        h1 {
+            font-size: 100px;
+            color: black;
+            margin-bottom: 20px;
+            text-align: center;
+        }
+
+        p {
+            font-size: 60px;
+            font-weight: bold;
+            color: #333;
+            margin-top: 20px;
+            text-align: center;
+        }
+
+        button {
+            display: block;
+            margin: 40px auto;
+            padding: 20px 40px;
+            font-size: 40px;
+            background-color: #4CAF50;
+            color: white;
+            border: none;
+            border-radius: 10px;
+            cursor: pointer;
+        }
+
+        button:hover {
+            background-color: #45a049;
+        }
+    </style>
 </head>
 
 <body>
     <h1>活力日常</h1>
     <div style="text-align: center; margin-top: 50px;">
-        <iframe width="560" height="315"
-            src="https://www.youtube.com/embed/DlkD-d-wzQ4?list=PLURmTTCauGCvq-HqaRoyRYjw1lovnodBb&index=40"
-            title="YouTube video player" frameborder="0"
-            allow="accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture; web-share"
-            allowfullscreen>
-        </iframe>
+        <div id="player"></div>
     </div>
     <p>做完活力運動可以領取獎勵喔</p>
-    <script src="script.js"></script>
+    <button onclick="history.back()">返回上一頁</button>
+
+    <!-- YouTube API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+    <script>
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '560',
+                videoId: 'DlkD-d-wzQ4', // 單一影片
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+    if (event.data === YT.PlayerState.ENDED) {
+        // Create overlay
+        const overlay = document.createElement('div');
+        overlay.style.position = 'fixed';
+        overlay.style.top = '0';
+        overlay.style.left = '0';
+        overlay.style.width = '100%';
+        overlay.style.height = '100%';
+        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+        overlay.style.display = 'flex';
+        overlay.style.alignItems = 'center';
+        overlay.style.justifyContent = 'center';
+        overlay.style.flexDirection = 'column';
+        overlay.style.zIndex = '9999';
+
+        // Create image
+        const img = document.createElement('img');
+        img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
+        img.style.maxWidth = '80vw';
+        img.style.maxHeight = '70vh';
+        img.style.borderRadius = '20px';
+        img.style.marginBottom = '20px';
+
+        // Close button (X)
+        const closeBtn = document.createElement('div');
+        closeBtn.innerHTML = '&times;';
+        closeBtn.style.position = 'absolute';
+        closeBtn.style.top = '20px';
+        closeBtn.style.right = '30px';
+        closeBtn.style.fontSize = '60px';
+        closeBtn.style.color = 'white';
+        closeBtn.style.cursor = 'pointer';
+        closeBtn.onclick = () => document.body.removeChild(overlay);
+
+        // Button container
+        const btnContainer = document.createElement('div');
+        btnContainer.style.display = 'flex';
+        btnContainer.style.gap = '20px';
+
+        // Download button
+        const downloadBtn = document.createElement('button');
+        downloadBtn.textContent = '下載圖片';
+        downloadBtn.style.fontSize = '24px';
+        downloadBtn.style.padding = '10px 20px';
+        downloadBtn.style.cursor = 'pointer';
+        downloadBtn.style.borderRadius = '10px';
+        downloadBtn.style.border = 'none';
+        downloadBtn.style.backgroundColor = '#4CAF50';
+        downloadBtn.style.color = 'white';
+        downloadBtn.onclick = () => {
+            const link = document.createElement('a');
+            link.href = img.src;
+            link.download = 'cute-cat.png';
+            link.click();
+        };
+
+        // Share to LINE button
+        const shareBtn = document.createElement('button');
+        shareBtn.textContent = '分享到 LINE';
+        shareBtn.style.fontSize = '24px';
+        shareBtn.style.padding = '10px 20px';
+        shareBtn.style.cursor = 'pointer';
+        shareBtn.style.borderRadius = '10px';
+        shareBtn.style.border = 'none';
+        shareBtn.style.backgroundColor = '#00c300';
+        shareBtn.style.color = 'white';
+        shareBtn.onclick = () => {
+            const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(img.src)}`;
+            window.open(lineShareUrl, '_blank');
+        };
+
+        // Append elements
+        btnContainer.appendChild(downloadBtn);
+        btnContainer.appendChild(shareBtn);
+        overlay.appendChild(closeBtn);
+        overlay.appendChild(img);
+        overlay.appendChild(btnContainer);
+        document.body.appendChild(overlay);
+    }
+}
+
+    </script>
 </body>
-
-<style>
-    h1 {
-        font-size: 36px;
-        color: black;
-        margin-bottom: 20px;
-        font-size: 100px;
-        text-align: center;
-    }
-
-    p {
-        font-size: 60px;
-        font-weight: bold;
-        color: #333;
-        margin-top: 20px;
-        text-align: center;
-    }
-</style>
-</head>
-
-
 
 </html>
