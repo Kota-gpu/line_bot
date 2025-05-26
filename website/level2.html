@@ -59,7 +59,7 @@
             player = new YT.Player('player', {
                 height: '315',
                 width: '560',
-                videoId: 'DlkD-d-wzQ4', // 單一影片
+                videoId: 'DlkD-d-wzQ4',
                 events: {
                     'onStateChange': onPlayerStateChange
                 }
@@ -67,87 +67,107 @@
         }
 
         function onPlayerStateChange(event) {
-    if (event.data === YT.PlayerState.ENDED) {
-        // Create overlay
-        const overlay = document.createElement('div');
-        overlay.style.position = 'fixed';
-        overlay.style.top = '0';
-        overlay.style.left = '0';
-        overlay.style.width = '100%';
-        overlay.style.height = '100%';
-        overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
-        overlay.style.display = 'flex';
-        overlay.style.alignItems = 'center';
-        overlay.style.justifyContent = 'center';
-        overlay.style.flexDirection = 'column';
-        overlay.style.zIndex = '9999';
+            if (event.data === YT.PlayerState.ENDED) {
+                // 建立 overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
 
-        // Create image
-        const img = document.createElement('img');
-        img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
-        img.style.maxWidth = '80vw';
-        img.style.maxHeight = '70vh';
-        img.style.borderRadius = '20px';
-        img.style.marginBottom = '20px';
+                // 視窗內容區塊
+                const popup = document.createElement('div');
+                popup.style.backgroundColor = 'white';
+                popup.style.padding = '30px';
+                popup.style.borderRadius = '20px';
+                popup.style.textAlign = 'center';
+                popup.style.maxWidth = '90%';
+                popup.style.maxHeight = '90%';
+                popup.style.overflowY = 'auto';
+                popup.style.position = 'relative';
 
-        // Close button (X)
-        const closeBtn = document.createElement('div');
-        closeBtn.innerHTML = '&times;';
-        closeBtn.style.position = 'absolute';
-        closeBtn.style.top = '20px';
-        closeBtn.style.right = '30px';
-        closeBtn.style.fontSize = '60px';
-        closeBtn.style.color = 'white';
-        closeBtn.style.cursor = 'pointer';
-        closeBtn.onclick = () => document.body.removeChild(overlay);
+                // 關閉按鈕
+                const closeBtn = document.createElement('div');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '10px';
+                closeBtn.style.right = '20px';
+                closeBtn.style.fontSize = '40px';
+                closeBtn.style.color = '#333';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.onclick = () => document.body.removeChild(overlay);
 
-        // Button container
-        const btnContainer = document.createElement('div');
-        btnContainer.style.display = 'flex';
-        btnContainer.style.gap = '20px';
+                // 圖片
+                const img = document.createElement('img');
+                img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
+                img.style.maxWidth = '50%';
+                img.style.borderRadius = '10px';
+                img.style.marginBottom = '20px';
 
-        // Download button
-        const downloadBtn = document.createElement('button');
-        downloadBtn.textContent = '下載圖片';
-        downloadBtn.style.fontSize = '24px';
-        downloadBtn.style.padding = '10px 20px';
-        downloadBtn.style.cursor = 'pointer';
-        downloadBtn.style.borderRadius = '10px';
-        downloadBtn.style.border = 'none';
-        downloadBtn.style.backgroundColor = '#4CAF50';
-        downloadBtn.style.color = 'white';
-        downloadBtn.onclick = () => {
-            const link = document.createElement('a');
-            link.href = img.src;
-            link.download = 'cute-cat.png';
-            link.click();
-        };
+                // 文字說明
+                const message = document.createElement('p');
+                message.textContent = '恭喜完成今天的活力挑戰 🎉';
+                message.style.fontSize = '50px';
+                message.style.color = '#333';
+                message.style.marginBottom = '20px';
 
-        // Share to LINE button
-        const shareBtn = document.createElement('button');
-        shareBtn.textContent = '分享到 LINE';
-        shareBtn.style.fontSize = '24px';
-        shareBtn.style.padding = '10px 20px';
-        shareBtn.style.cursor = 'pointer';
-        shareBtn.style.borderRadius = '10px';
-        shareBtn.style.border = 'none';
-        shareBtn.style.backgroundColor = '#00c300';
-        shareBtn.style.color = 'white';
-        shareBtn.onclick = () => {
-            const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(img.src)}`;
-            window.open(lineShareUrl, '_blank');
-        };
+                // 領獎按鈕
+                const rewardBtn = document.createElement('button');
+                rewardBtn.textContent = '領取獎勵';
+                rewardBtn.style.fontSize = '50px';
+                rewardBtn.style.padding = '10px 20px';
+                rewardBtn.style.backgroundColor = '#4CAF50';
+                rewardBtn.style.color = 'white';
+                rewardBtn.style.border = 'none';
+                rewardBtn.style.borderRadius = '10px';
+                rewardBtn.style.margin = '10px';
+                rewardBtn.onclick = () => alert('獎勵已領取！');
 
-        // Append elements
-        btnContainer.appendChild(downloadBtn);
-        btnContainer.appendChild(shareBtn);
-        overlay.appendChild(closeBtn);
-        overlay.appendChild(img);
-        overlay.appendChild(btnContainer);
-        document.body.appendChild(overlay);
-    }
-}
+                // LINE 分享按鈕
+                const shareBtn = document.createElement('button');
+                shareBtn.textContent = '分享到 LINE';
+                shareBtn.style.fontSize = '50px';
+                shareBtn.style.padding = '10px 20px';
+                shareBtn.style.backgroundColor = '#00c300';
+                shareBtn.style.color = 'white';
+                shareBtn.style.border = 'none';
+                shareBtn.style.borderRadius = '10px';
+                shareBtn.style.margin = '10px';
+                shareBtn.onclick = () => {
+                    const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(location.href)}`;
+                    window.open(lineShareUrl, '_blank');
+                };
 
+                // 建立一個按鈕容器
+                const btnContainer = document.createElement('div');
+                btnContainer.style.display = 'flex';
+                btnContainer.style.justifyContent = 'space-between';
+                btnContainer.style.width = '800px';  // 調整寬度，依需求改變
+                btnContainer.style.margin = '20px auto';  // 置中容器
+                btnContainer.style.gap = '20px';
+
+
+                // 把按鈕加入容器
+                btnContainer.appendChild(rewardBtn);
+                btnContainer.appendChild(shareBtn);
+
+                // 元素組合
+                popup.appendChild(closeBtn);
+                popup.appendChild(message);
+                popup.appendChild(img);
+                popup.appendChild(btnContainer);
+                // popup.appendChild(rewardBtn);
+                // popup.appendChild(shareBtn);
+                overlay.appendChild(popup);
+                document.body.appendChild(overlay);
+            }
+        }
     </script>
 </body>
 
