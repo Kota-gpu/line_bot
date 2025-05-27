@@ -4,39 +4,54 @@ from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 import os
+import json
 
 app = Flask(__name__)
 
 # 環境變數（Render 上設定）
 LINE_CHANNEL_ACCESS_TOKEN = os.getenv("LINE_CHANNEL_ACCESS_TOKEN")
 LINE_CHANNEL_SECRET = os.getenv("LINE_CHANNEL_SECRET")
-YOUR_USER_ID = os.getenv("LINE_USER_ID")  # 你要發訊息的對象
 
 assert LINE_CHANNEL_ACCESS_TOKEN, "LINE_CHANNEL_ACCESS_TOKEN not set"
 assert LINE_CHANNEL_SECRET, "LINE_CHANNEL_SECRET not set"
-assert YOUR_USER_ID, "LINE_USER_ID not set"
 
 line_bot_api = LineBotApi(LINE_CHANNEL_ACCESS_TOKEN)
 handler = WebhookHandler(LINE_CHANNEL_SECRET)
 
-# --- 定時任務 ---
-def send_daily_message():
-    try:
-        message = TextSendMessage(text="Fluffy is the best cat in the world")
-        line_bot_api.push_message(YOUR_USER_ID, message)
-        print(f"[{datetime.now()}] Sent daily message.")
-    except Exception as e:
-        print(f"[Error sending scheduled message] {e}")
+SUBSCRIBERS_FILE = "subscribers.json"
 
-# 啟動排程器
+# 載入已訂閱用戶
+def load_subscribers():
+    if not os.path.exists(SUBSCRIBERS_FILE):
+        return set()
+    with open(SUBSCRIBERS_FILE, "r") as f:
+        return set(json.load(f))
+
+# 儲存訂閱用戶
+def save_subscribers(users):
+    with open(SUBSCRIBERS_FILE, "w") as f:
+        json.dump(list(users), f)
+
+subscribed_users = load_subscribers()
+
+# 定時發送訊息
+def send_daily_message():
+    message = TextSendMessage(text="Fluffy is the best cat in the world")
+    for user_id in subscribed_users:
+        try:
+            line_bot_api.push_message(user_id, message)
+            print(f"[{datetime.now()}] Sent reminder to {user_id}")
+        except Exception as e:
+            print(f"[Error sending to {user_id}]: {e}")
+
+# 啟動排程器：每天中午 12:10 發送訊息
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(send_daily_message, 'cron', hour=0, minute=10)
+scheduler.add_job(send_daily_message, 'cron', hour=12, minute=15)
 scheduler.start()
 
-# --- Flask 路由 ---
 @app.route("/")
 def home():
-    return "LINE Bot with Scheduler is running!"
+    return "LINE Bot with daily reminder is running!"
 
 @app.route("/callback", methods=["POST"])
 def callback():
@@ -45,24 +60,31 @@ def callback():
     try:
         handler.handle(body, signature)
     except Exception as e:
-        print(f"Error in webhook handler: {e}")
+        print(f"Webhook error: {e}")
         return "Bad Request", 400
     return "OK"
 
-# --- 處理 LINE 訊息事件 ---
+# 處理來自 LINE 的文字訊息
 @handler.add(MessageEvent, message=TextMessage)
 def handle_message(event):
-    text = event.message.text
-    if text.lower() == "提醒我":
-        reply = "你設定的提醒將在每天晚上 11:35 傳送給你！"
+    user_id = event.source.user_id
+    text = event.message.text.strip().lower()
+
+    if text == "提醒我":
+        if user_id not in subscribed_users:
+            subscribed_users.add(user_id)
+            save_subscribers(subscribed_users)
+            reply = "你已成功訂閱每日提醒！🐱 每天中午 12:10 會收到 Fluffy 的小秘密～"
+        else:
+            reply = "你已經訂閱過囉～請靜候 Fluffy 的每日溫馨提醒 🐾"
     else:
-        reply = f"你剛說的是：{text}"
+        reply = f"你剛說的是：{event.message.text}"
+
     line_bot_api.reply_message(
         event.reply_token,
         TextSendMessage(text=reply)
     )
 
-# --- 執行 Flask App ---
 if __name__ == "__main__":
     port = int(os.environ.get("PORT", 5000))
-    app.run(host="0.0.0.0", port=port, debug=False)
+    app.run(host="0.0.0.0", port=port)
