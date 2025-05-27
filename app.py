@@ -46,7 +46,7 @@ def send_daily_message():
 
 # 啟動排程器：每天中午 12:10 發送訊息
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(send_daily_message, 'cron', hour=0, minute=18)
+scheduler.add_job(send_daily_message, 'cron', hour=0, minute=25)
 scheduler.start()
 
 @app.route("/")
@@ -74,7 +74,7 @@ def handle_message(event):
         if user_id not in subscribed_users:
             subscribed_users.add(user_id)
             save_subscribers(subscribed_users)
-            reply = "你已成功訂閱每日提醒！🐱 每天中午 12:30 會收到 Fluffy 的小秘密～"
+            reply = "你已成功訂閱每日提醒！🐱 每天 12:30 會收到 Fluffy 的小秘密～"
         else:
             reply = "你已經訂閱過囉～請靜候 Fluffy 的每日溫馨提醒 🐾"
     else:
