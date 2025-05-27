@@ -5,6 +5,8 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 import os
 import json
+from pytz import timezone
+
 
 app = Flask(__name__)
 
@@ -46,7 +48,7 @@ def send_daily_message():
 
 # 啟動排程器：每天中午 12:10 發送訊息
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(send_daily_message, 'cron', hour=0, minute=25)
+scheduler.add_job(send_daily_message, 'cron', hour=0, minute=33, timezone=timezone('Asia/Taipei'))
 scheduler.start()
 
 @app.route("/")
