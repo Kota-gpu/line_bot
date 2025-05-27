@@ -30,7 +30,7 @@ def send_daily_message():
 
 # 啟動排程器
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(send_daily_message, 'cron', hour=23, minute=55)
+scheduler.add_job(send_daily_message, 'cron', hour=0, minute=10)
 scheduler.start()
 
 # --- Flask 路由 ---
