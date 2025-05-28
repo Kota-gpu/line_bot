@@ -48,7 +48,7 @@ def send_daily_message():
 
 # 啟動排程器：每天中午 12:10 發送訊息
 #scheduler = BackgroundScheduler(daemon=True)
-#scheduler.add_job(send_daily_message, 'cron', hour=0, minute=33, timezone=timezone('Asia/Taipei'))
+#scheduler.add_job(send_daily_message, 'cron', hour=1, minute=35, timezone=timezone('Asia/Taipei'))
 #scheduler.start()
 @app.route("/reminder", methods=["GET"])
 def manual_reminder():
