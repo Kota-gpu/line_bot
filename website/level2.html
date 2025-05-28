@@ -105,7 +105,17 @@
 
                 // 圖片
                 const img = document.createElement('img');
-                img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
+                const imageList = [
+                    'images/level2/example.png',
+                    'images/level2/reward1.jpg',
+                    'images/level2/reward2.jpg',
+                    'images/level2/reward3.jpg',
+                    'images/level2/reward4.jpg',
+                    'images/level2/reward5.jpg'
+                ];
+                const randomIndex = Math.floor(Math.random() * imageList.length);
+                const randomImage = imageList[randomIndex];
+                img.src = randomImage;
                 img.style.maxWidth = '50%';
                 img.style.borderRadius = '10px';
                 img.style.marginBottom = '20px';

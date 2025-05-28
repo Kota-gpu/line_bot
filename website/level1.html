@@ -106,7 +106,16 @@
 
                 // 圖片
                 const img = document.createElement('img');
-                img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
+                const imageList = [
+                    'images/level1/example.png',
+                    'images/level1/reward1.jpg',
+                    'images/level1/reward2.jpg',
+                    'images/level1/reward3.jpg',
+                    'images/level1/reward4.jpg'
+                ];
+                const randomIndex = Math.floor(Math.random() * imageList.length);
+                const randomImage = imageList[randomIndex];
+                img.src = randomImage;
                 img.style.maxWidth = '50%';
                 img.style.borderRadius = '10px';
                 img.style.marginBottom = '20px';
