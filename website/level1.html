@@ -45,9 +45,131 @@
 
 <body>
     <h1>舒活晨起</h1>
+    <div style="text-align: center; margin-top: 50px;">
+        <div id="player"></div>
+    </div>
     <p>做完活力運動可以領取獎勵喔</p>
     <button onclick="history.back()">返回上一頁</button>
-    <script src="script.js"></script>
+    <!-- YouTube API Script -->
+    <script src="https://www.youtube.com/iframe_api"></script>
+
+
+    <script>
+        let player;
+        function onYouTubeIframeAPIReady() {
+            player = new YT.Player('player', {
+                height: '315',
+                width: '560',
+                videoId: 'M2XlMTicAnY',
+                events: {
+                    'onStateChange': onPlayerStateChange
+                }
+            });
+        }
+
+        function onPlayerStateChange(event) {
+            if (event.data === YT.PlayerState.ENDED) {
+                // 建立 overlay
+                const overlay = document.createElement('div');
+                overlay.style.position = 'fixed';
+                overlay.style.top = '0';
+                overlay.style.left = '0';
+                overlay.style.width = '100%';
+                overlay.style.height = '100%';
+                overlay.style.backgroundColor = 'rgba(0, 0, 0, 0.8)';
+                overlay.style.display = 'flex';
+                overlay.style.alignItems = 'center';
+                overlay.style.justifyContent = 'center';
+                overlay.style.zIndex = '9999';
+
+                // 視窗內容區塊
+                const popup = document.createElement('div');
+                popup.style.backgroundColor = 'white';
+                popup.style.padding = '30px';
+                popup.style.borderRadius = '20px';
+                popup.style.textAlign = 'center';
+                popup.style.maxWidth = '90%';
+                popup.style.maxHeight = '90%';
+                popup.style.overflowY = 'auto';
+                popup.style.position = 'relative';
+
+                // 關閉按鈕
+                const closeBtn = document.createElement('div');
+                closeBtn.innerHTML = '&times;';
+                closeBtn.style.position = 'absolute';
+                closeBtn.style.top = '10px';
+                closeBtn.style.right = '20px';
+                closeBtn.style.fontSize = '40px';
+                closeBtn.style.color = '#333';
+                closeBtn.style.cursor = 'pointer';
+                closeBtn.onclick = () => document.body.removeChild(overlay);
+
+                // 圖片
+                const img = document.createElement('img');
+                img.src = '5fe0c4c9-fe28-4443-bd7b-9bc16c13a625.png';
+                img.style.maxWidth = '50%';
+                img.style.borderRadius = '10px';
+                img.style.marginBottom = '20px';
+
+                // 文字說明
+                const message = document.createElement('p');
+                message.textContent = '恭喜完成今天的活力挑戰 🎉';
+                message.style.fontSize = '50px';
+                message.style.color = '#333';
+                message.style.marginBottom = '20px';
+
+                // 領獎按鈕
+                const rewardBtn = document.createElement('button');
+                rewardBtn.textContent = '領取獎勵';
+                rewardBtn.style.fontSize = '50px';
+                rewardBtn.style.padding = '10px 20px';
+                rewardBtn.style.backgroundColor = '#4CAF50';
+                rewardBtn.style.color = 'white';
+                rewardBtn.style.border = 'none';
+                rewardBtn.style.borderRadius = '10px';
+                rewardBtn.style.margin = '10px';
+                rewardBtn.onclick = () => alert('獎勵已領取！');
+
+                // LINE 分享按鈕
+                const shareBtn = document.createElement('button');
+                shareBtn.textContent = '分享到 LINE';
+                shareBtn.style.fontSize = '50px';
+                shareBtn.style.padding = '10px 20px';
+                shareBtn.style.backgroundColor = '#00c300';
+                shareBtn.style.color = 'white';
+                shareBtn.style.border = 'none';
+                shareBtn.style.borderRadius = '10px';
+                shareBtn.style.margin = '10px';
+                shareBtn.onclick = () => {
+                    const lineShareUrl = `https://social-plugins.line.me/lineit/share?url=${encodeURIComponent(location.href)}`;
+                    window.open(lineShareUrl, '_blank');
+                };
+
+                // 建立一個按鈕容器
+                const btnContainer = document.createElement('div');
+                btnContainer.style.display = 'flex';
+                btnContainer.style.justifyContent = 'space-between';
+                btnContainer.style.width = '800px';  // 調整寬度，依需求改變
+                btnContainer.style.margin = '20px auto';  // 置中容器
+                btnContainer.style.gap = '20px';
+
+
+                // 把按鈕加入容器
+                btnContainer.appendChild(rewardBtn);
+                btnContainer.appendChild(shareBtn);
+
+                // 元素組合
+                popup.appendChild(closeBtn);
+                popup.appendChild(message);
+                popup.appendChild(img);
+                popup.appendChild(btnContainer);
+                // popup.appendChild(rewardBtn);
+                // popup.appendChild(shareBtn);
+                overlay.appendChild(popup);
+                document.body.appendChild(overlay);
+            }
+        }
+    </script>
 </body>
 
 </html>
