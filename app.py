@@ -5,8 +5,6 @@ from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
 import os
 import json
-from pytz import timezone
-
 
 app = Flask(__name__)
 
@@ -38,7 +36,7 @@ subscribed_users = load_subscribers()
 
 # 定時發送訊息
 def send_daily_message():
-    message = TextSendMessage(text="今天也活動一下身體吧: ")
+    message = TextSendMessage(text="Fluffy is the best cat in the world")
     for user_id in subscribed_users:
         try:
             line_bot_api.push_message(user_id, message)
@@ -47,13 +45,9 @@ def send_daily_message():
             print(f"[Error sending to {user_id}]: {e}")
 
 # 啟動排程器：每天中午 12:10 發送訊息
-#scheduler = BackgroundScheduler(daemon=True)
-#scheduler.add_job(send_daily_message, 'cron', hour=1, minute=35, timezone=timezone('Asia/Taipei'))
-#scheduler.start()
-@app.route("/reminder", methods=["GET"])
-def manual_reminder():
-    send_daily_message()
-    return "Reminder sent.", 200
+scheduler = BackgroundScheduler(daemon=True)
+scheduler.add_job(send_daily_message, 'cron', hour=15, minute=50)
+scheduler.start()
 
 @app.route("/")
 def home():
@@ -80,9 +74,9 @@ def handle_message(event):
         if user_id not in subscribed_users:
             subscribed_users.add(user_id)
             save_subscribers(subscribed_users)
-            reply = "你已成功訂閱每日提醒！每天都會提醒運動喔🐱"
+            reply = "你已成功訂閱每日提醒！🐱 每天中午 12:10 會收到 Fluffy 的小秘密～"
         else:
-            reply = "你已經訂閱過囉～請靜候每日溫馨提醒 🐾"
+            reply = "你已經訂閱過囉～請靜候 Fluffy 的每日溫馨提醒 🐾"
     else:
         reply = f"你剛說的是：{event.message.text}"
 

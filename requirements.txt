@@ -3,3 +3,4 @@ line-bot-sdk
 gunicorn
 apscheduler
 pytz
+firebase-admin
