@@ -3,6 +3,7 @@ from linebot import LineBotApi, WebhookHandler
 from linebot.models import MessageEvent, TextMessage, TextSendMessage
 from apscheduler.schedulers.background import BackgroundScheduler
 from datetime import datetime
+from pytz import timezone
 import os
 import json
 
@@ -34,24 +35,37 @@ def save_subscribers(users):
 
 subscribed_users = load_subscribers()
 
-# 定時發送訊息
-def send_daily_message():
-    message = TextSendMessage(text="Fluffy is the best cat in the world")
+# 發送客製訊息
+def send_custom_message(text):
+    message = TextSendMessage(text=text)
     for user_id in subscribed_users:
         try:
             line_bot_api.push_message(user_id, message)
-            print(f"[{datetime.now()}] Sent reminder to {user_id}")
+            print(f"[{datetime.now()}] Sent: '{text}' to {user_id}")
         except Exception as e:
             print(f"[Error sending to {user_id}]: {e}")
 
-# 啟動排程器：每天中午 12:10 發送訊息
+# 啟動排程器：多個時間提醒
+tz = timezone('Asia/Taipei')
 scheduler = BackgroundScheduler(daemon=True)
-scheduler.add_job(send_daily_message, 'cron', hour=15, minute=50)
+
+# 🕛 中午提醒
+scheduler.add_job(lambda: send_custom_message("Fluffy 是世界上最棒的貓咪！"),
+                  'cron', hour=12, minute=10, timezone=tz)
+
+# 🧘 下午提醒
+scheduler.add_job(lambda: send_custom_message("記得伸展一下筋骨，放鬆一下喔～"),
+                  'cron', hour=16, minute=0, timezone=tz)
+
+# 🛌 睡前提醒
+scheduler.add_job(lambda: send_custom_message("睡前抱抱 Fluffy，一天結束囉💤"),
+                  'cron', hour=22, minute=0, timezone=tz)
+
 scheduler.start()
 
 @app.route("/")
 def home():
-    return "LINE Bot with daily reminder is running!"
+    return "LINE Bot with multiple daily reminders is running!"
 
 @app.route("/callback", methods=["POST"])
 def callback():
@@ -74,9 +88,9 @@ def handle_message(event):
         if user_id not in subscribed_users:
             subscribed_users.add(user_id)
             save_subscribers(subscribed_users)
-            reply = "你已成功訂閱每日提醒！🐱 每天中午 12:10 會收到 Fluffy 的小秘密～"
+            reply = "你已成功訂閱每日提醒！每天三次貼心提醒將送達 🐱"
         else:
-            reply = "你已經訂閱過囉～請靜候 Fluffy 的每日溫馨提醒 🐾"
+            reply = "你已經訂閱過囉～請靜候每日三次 Fluffy 的小提醒 🐾"
     else:
         reply = f"你剛說的是：{event.message.text}"
 
