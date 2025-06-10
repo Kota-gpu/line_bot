@@ -49,17 +49,20 @@ def send_custom_message(text):
 tz = timezone('Asia/Taipei')
 scheduler = BackgroundScheduler(daemon=True)
 
-# 🕛 中午提醒
-scheduler.add_job(lambda: send_custom_message("Fluffy 是世界上最棒的貓咪！"),
-                  'cron', hour=12, minute=10, timezone=tz)
+scheduler.add_job(lambda: send_custom_message("早安🌅，該享用營養豐盛的早餐囉！別忘了飯後服用早上的藥品，祝您一天元氣滿滿💪"),
+                  'cron', hour=22, minute=50, timezone=tz)
 
-# 🧘 下午提醒
-scheduler.add_job(lambda: send_custom_message("記得伸展一下筋骨，放鬆一下喔～"),
-                  'cron', hour=16, minute=0, timezone=tz)
+scheduler.add_job(lambda: send_custom_message("中午好🍱，該吃飯囉！飯後請服用午餐藥品，保護健康，讓午後也精神飽滿✨"),
+                  'cron', hour=22, minute=51, timezone=tz)
 
-# 🛌 睡前提醒
-scheduler.add_job(lambda: send_custom_message("睡前抱抱 Fluffy，一天結束囉💤"),
-                  'cron', hour=22, minute=0, timezone=tz)
+scheduler.add_job(lambda: send_custom_message("下午好，💧 喝一杯清水，補充水分，🧘‍♂️ 伸展一下手腳，動動筋骨，健康從小動作開始，祝您購物愉快、神清氣爽！😊 運動挑戰連結: https://kota-gpu.github.io/line_bot/level1.html"),
+                  'cron', hour=22, minute=52, timezone=tz)
+
+scheduler.add_job(lambda: send_custom_message("傍晚好🌇，準備享用美味晚餐！餐後請記得服用晚餐藥品，祝您今晚好好休息😉"),
+                  'cron', hour=22, minute=53, timezone=tz)
+
+scheduler.add_job(lambda: send_custom_message("夜深了🌙，該準備就寢了。在睡前請服用臨睡前藥品，安穩入眠，明早再見👋"),
+                  'cron', hour=22, minute=54, timezone=tz)
 
 scheduler.start()
 
