@@ -91,9 +91,9 @@ def handle_message(event):
         if user_id not in subscribed_users:
             subscribed_users.add(user_id)
             save_subscribers(subscribed_users)
-            reply = "你已成功訂閱每日提醒！每天三次貼心提醒將送達 🐱"
+            reply = "你已成功訂閱每日提醒！每天四次貼心服藥提醒以及運動挑戰將送達 💪"
         else:
-            reply = "你已經訂閱過囉～請靜候每日三次 Fluffy 的小提醒 🐾"
+            reply = "你已經訂閱過囉～請靜候每日的小提醒 😉"
     else:
         reply = f"你剛說的是：{event.message.text}"
 
